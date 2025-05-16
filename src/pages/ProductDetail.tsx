@@ -99,7 +99,7 @@ const ProductDetail = () => {
   
   // Format price
   const price = parseFloat(product.priceRange.minVariantPrice.amount);
-  const formattedPrice = new Intl.NumberFormat('en-US', {
+  const formattedPrice = new Intl.NumberFormat('en-IN', {
     style: 'currency',
     currency: product.priceRange.minVariantPrice.currencyCode,
   }).format(price);
@@ -221,7 +221,7 @@ const ProductDetail = () => {
             <div className="border-t pt-6 space-y-4">
               <div>
                 <h3 className="font-medium">Shipping</h3>
-                <p className="text-gray-600">Free shipping on orders over $100</p>
+                <p className="text-gray-600">Free shipping on orders over ₹5000</p>
               </div>
               <div>
                 <h3 className="font-medium">Returns</h3>

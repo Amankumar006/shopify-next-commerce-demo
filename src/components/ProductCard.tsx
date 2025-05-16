@@ -31,7 +31,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   
   // Format price
   const price = parseFloat(product.priceRange.minVariantPrice.amount);
-  const formattedPrice = new Intl.NumberFormat('en-US', {
+  const formattedPrice = new Intl.NumberFormat('en-IN', {
     style: 'currency',
     currency: product.priceRange.minVariantPrice.currencyCode,
   }).format(price);

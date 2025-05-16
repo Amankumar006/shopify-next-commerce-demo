@@ -105,12 +105,12 @@ export const mockProducts: MockProduct[] = [
     descriptionHtml: "<p>A comfortable classic white t-shirt that goes with everything.</p>",
     priceRange: {
       minVariantPrice: {
-        amount: "19.99",
-        currencyCode: "USD"
+        amount: "1499",
+        currencyCode: "INR"
       },
       maxVariantPrice: {
-        amount: "19.99",
-        currencyCode: "USD"
+        amount: "1499",
+        currencyCode: "INR"
       }
     },
     images: {
@@ -154,8 +154,8 @@ export const mockProducts: MockProduct[] = [
             availableForSale: true,
             quantityAvailable: 10,
             priceV2: {
-              amount: "19.99",
-              currencyCode: "USD"
+              amount: "1499",
+              currencyCode: "INR"
             },
             selectedOptions: [
               { name: "Size", value: "S" },
@@ -170,8 +170,8 @@ export const mockProducts: MockProduct[] = [
             availableForSale: true,
             quantityAvailable: 15,
             priceV2: {
-              amount: "19.99",
-              currencyCode: "USD"
+              amount: "1499",
+              currencyCode: "INR"
             },
             selectedOptions: [
               { name: "Size", value: "M" },
@@ -186,8 +186,8 @@ export const mockProducts: MockProduct[] = [
             availableForSale: true,
             quantityAvailable: 5,
             priceV2: {
-              amount: "19.99",
-              currencyCode: "USD"
+              amount: "1499",
+              currencyCode: "INR"
             },
             selectedOptions: [
               { name: "Size", value: "L" },
@@ -202,8 +202,8 @@ export const mockProducts: MockProduct[] = [
             availableForSale: true,
             quantityAvailable: 7,
             priceV2: {
-              amount: "19.99",
-              currencyCode: "USD"
+              amount: "1499",
+              currencyCode: "INR"
             },
             selectedOptions: [
               { name: "Size", value: "XL" },
@@ -216,18 +216,18 @@ export const mockProducts: MockProduct[] = [
   },
   {
     id: "gid://shopify/Product/2",
-    title: "Vintage Black Jeans",
-    handle: "vintage-black-jeans",
-    description: "High-quality black jeans with a vintage look and feel.",
-    descriptionHtml: "<p>High-quality black jeans with a vintage look and feel.</p>",
+    title: "Designer Jeans",
+    handle: "designer-jeans",
+    description: "High-quality jeans with a modern fit and premium finish.",
+    descriptionHtml: "<p>High-quality jeans with a modern fit and premium finish.</p>",
     priceRange: {
       minVariantPrice: {
-        amount: "59.99",
-        currencyCode: "USD"
+        amount: "3999",
+        currencyCode: "INR"
       },
       maxVariantPrice: {
-        amount: "59.99",
-        currencyCode: "USD"
+        amount: "3999",
+        currencyCode: "INR"
       }
     },
     images: {
@@ -235,7 +235,7 @@ export const mockProducts: MockProduct[] = [
         {
           node: {
             url: "https://images.unsplash.com/photo-1582418702059-97ebafb35d09?q=80&w=1915&auto=format&fit=crop",
-            altText: "Vintage Black Jeans",
+            altText: "Designer Jeans",
             width: 800,
             height: 800
           }
@@ -243,7 +243,7 @@ export const mockProducts: MockProduct[] = [
         {
           node: {
             url: "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?q=80&w=2080&auto=format&fit=crop",
-            altText: "Vintage Black Jeans Detail",
+            altText: "Designer Jeans Detail",
             width: 800,
             height: 800
           }
@@ -271,8 +271,8 @@ export const mockProducts: MockProduct[] = [
             availableForSale: true,
             quantityAvailable: 8,
             priceV2: {
-              amount: "59.99",
-              currencyCode: "USD"
+              amount: "3999",
+              currencyCode: "INR"
             },
             selectedOptions: [
               { name: "Size", value: "30" },
@@ -287,8 +287,8 @@ export const mockProducts: MockProduct[] = [
             availableForSale: true,
             quantityAvailable: 12,
             priceV2: {
-              amount: "59.99",
-              currencyCode: "USD"
+              amount: "3999",
+              currencyCode: "INR"
             },
             selectedOptions: [
               { name: "Size", value: "32" },
@@ -307,12 +307,12 @@ export const mockProducts: MockProduct[] = [
     descriptionHtml: "<p>Durable canvas backpack with leather details, perfect for daily use or short trips.</p>",
     priceRange: {
       minVariantPrice: {
-        amount: "79.99",
-        currencyCode: "USD"
+        amount: "5999",
+        currencyCode: "INR"
       },
       maxVariantPrice: {
-        amount: "79.99",
-        currencyCode: "USD"
+        amount: "5999",
+        currencyCode: "INR"
       }
     },
     images: {
@@ -351,8 +351,8 @@ export const mockProducts: MockProduct[] = [
             availableForSale: true,
             quantityAvailable: 5,
             priceV2: {
-              amount: "79.99",
-              currencyCode: "USD"
+              amount: "5999",
+              currencyCode: "INR"
             },
             selectedOptions: [
               { name: "Color", value: "Brown" }
@@ -366,8 +366,8 @@ export const mockProducts: MockProduct[] = [
             availableForSale: true,
             quantityAvailable: 7,
             priceV2: {
-              amount: "79.99",
-              currencyCode: "USD"
+              amount: "5999",
+              currencyCode: "INR"
             },
             selectedOptions: [
               { name: "Color", value: "Navy" }
@@ -381,8 +381,8 @@ export const mockProducts: MockProduct[] = [
             availableForSale: true,
             quantityAvailable: 3,
             priceV2: {
-              amount: "79.99",
-              currencyCode: "USD"
+              amount: "5999",
+              currencyCode: "INR"
             },
             selectedOptions: [
               { name: "Color", value: "Olive" }
@@ -400,12 +400,12 @@ export const mockProducts: MockProduct[] = [
     descriptionHtml: "<p>Premium wireless headphones with noise cancellation and long battery life.</p>",
     priceRange: {
       minVariantPrice: {
-        amount: "149.99",
-        currencyCode: "USD"
+        amount: "10999",
+        currencyCode: "INR"
       },
       maxVariantPrice: {
-        amount: "149.99",
-        currencyCode: "USD"
+        amount: "10999",
+        currencyCode: "INR"
       }
     },
     images: {
@@ -444,8 +444,8 @@ export const mockProducts: MockProduct[] = [
             availableForSale: true,
             quantityAvailable: 15,
             priceV2: {
-              amount: "149.99",
-              currencyCode: "USD"
+              amount: "10999",
+              currencyCode: "INR"
             },
             selectedOptions: [
               { name: "Color", value: "Black" }
@@ -459,8 +459,8 @@ export const mockProducts: MockProduct[] = [
             availableForSale: true,
             quantityAvailable: 10,
             priceV2: {
-              amount: "149.99",
-              currencyCode: "USD"
+              amount: "10999",
+              currencyCode: "INR"
             },
             selectedOptions: [
               { name: "Color", value: "Silver" }
@@ -474,8 +474,8 @@ export const mockProducts: MockProduct[] = [
             availableForSale: true,
             quantityAvailable: 8,
             priceV2: {
-              amount: "149.99",
-              currencyCode: "USD"
+              amount: "10999",
+              currencyCode: "INR"
             },
             selectedOptions: [
               { name: "Color", value: "Rose Gold" }
@@ -493,12 +493,12 @@ export const mockProducts: MockProduct[] = [
     descriptionHtml: "<p>Latest generation smart watch with health monitoring and notification features.</p>",
     priceRange: {
       minVariantPrice: {
-        amount: "199.99",
-        currencyCode: "USD"
+        amount: "15999",
+        currencyCode: "INR"
       },
       maxVariantPrice: {
-        amount: "249.99",
-        currencyCode: "USD"
+        amount: "19999",
+        currencyCode: "INR"
       }
     },
     images: {
@@ -542,8 +542,8 @@ export const mockProducts: MockProduct[] = [
             availableForSale: true,
             quantityAvailable: 20,
             priceV2: {
-              amount: "199.99",
-              currencyCode: "USD"
+              amount: "15999",
+              currencyCode: "INR"
             },
             selectedOptions: [
               { name: "Size", value: "40mm" },
@@ -558,8 +558,8 @@ export const mockProducts: MockProduct[] = [
             availableForSale: true,
             quantityAvailable: 15,
             priceV2: {
-              amount: "229.99",
-              currencyCode: "USD"
+              amount: "17999",
+              currencyCode: "INR"
             },
             selectedOptions: [
               { name: "Size", value: "44mm" },
@@ -574,8 +574,8 @@ export const mockProducts: MockProduct[] = [
             availableForSale: true,
             quantityAvailable: 10,
             priceV2: {
-              amount: "249.99",
-              currencyCode: "USD"
+              amount: "19999",
+              currencyCode: "INR"
             },
             selectedOptions: [
               { name: "Size", value: "44mm" },
@@ -594,12 +594,12 @@ export const mockProducts: MockProduct[] = [
     descriptionHtml: "<p>Professional-grade coffee maker for the perfect brew every morning.</p>",
     priceRange: {
       minVariantPrice: {
-        amount: "129.99",
-        currencyCode: "USD"
+        amount: "9999",
+        currencyCode: "INR"
       },
       maxVariantPrice: {
-        amount: "129.99",
-        currencyCode: "USD"
+        amount: "9999",
+        currencyCode: "INR"
       }
     },
     images: {
@@ -638,8 +638,8 @@ export const mockProducts: MockProduct[] = [
             availableForSale: true,
             quantityAvailable: 25,
             priceV2: {
-              amount: "129.99",
-              currencyCode: "USD"
+              amount: "9999",
+              currencyCode: "INR"
             },
             selectedOptions: [
               { name: "Color", value: "Black" }
@@ -653,8 +653,8 @@ export const mockProducts: MockProduct[] = [
             availableForSale: true,
             quantityAvailable: 18,
             priceV2: {
-              amount: "129.99",
-              currencyCode: "USD"
+              amount: "9999",
+              currencyCode: "INR"
             },
             selectedOptions: [
               { name: "Color", value: "Stainless Steel" }

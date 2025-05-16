@@ -20,11 +20,11 @@ export default function CartDrawer() {
   const cartEmpty = cartItems.length === 0;
   
   const subtotal = cart?.estimatedCost?.subtotalAmount
-    ? new Intl.NumberFormat('en-US', {
+    ? new Intl.NumberFormat('en-IN', {
         style: 'currency',
         currency: cart.estimatedCost.subtotalAmount.currencyCode,
       }).format(parseFloat(cart.estimatedCost.subtotalAmount.amount))
-    : '$0.00';
+    : '₹0.00';
 
   return (
     <>
@@ -53,7 +53,7 @@ export default function CartDrawer() {
           <>
             <div className="flex-grow overflow-y-auto p-4">
               {cartItems.map(({ node }) => {
-                const price = new Intl.NumberFormat('en-US', {
+                const price = new Intl.NumberFormat('en-IN', {
                   style: 'currency',
                   currency: node.merchandise.priceV2.currencyCode,
                 }).format(parseFloat(node.merchandise.priceV2.amount));
