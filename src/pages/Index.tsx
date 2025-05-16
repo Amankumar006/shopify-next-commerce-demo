@@ -6,8 +6,6 @@ import Navbar from "@/components/Navbar";
 import CartDrawer from "@/components/CartDrawer";
 import HeroSection from "@/components/HeroSection";
 import Footer from "@/components/Footer";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import { Card, CardContent } from "@/components/ui/card";
 
 const Index = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
@@ -23,7 +21,7 @@ const Index = () => {
         setError(null);
       } catch (err) {
         console.error("Error loading products:", err);
-        setError("Failed to load products. Please configure your Shopify API credentials.");
+        setError("Failed to load products. Please try again later.");
       } finally {
         setIsLoading(false);
       }
@@ -50,35 +48,8 @@ const Index = () => {
           )}
 
           {error && (
-            <div className="space-y-4 py-10">
-              <Alert variant="destructive">
-                <AlertTitle>Error</AlertTitle>
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-              
-              <Card>
-                <CardContent className="pt-6">
-                  <h3 className="text-lg font-medium mb-2">Shopify API Configuration</h3>
-                  <p className="mb-4">This demo requires Shopify API credentials to be configured:</p>
-                  
-                  <ol className="list-decimal pl-5 space-y-2 mb-4">
-                    <li>Create a Shopify development store</li>
-                    <li>Install the "Storefront API" app in your Shopify store</li>
-                    <li>Obtain your Storefront API access token</li>
-                    <li>Configure the following environment variables:</li>
-                  </ol>
-                  
-                  <div className="bg-gray-100 p-4 rounded font-mono text-sm mb-4">
-                    <p>VITE_SHOPIFY_STOREFRONT_ACCESS_TOKEN=your_access_token</p>
-                    <p>VITE_SHOPIFY_STORE_DOMAIN=your-store.myshopify.com</p>
-                  </div>
-                  
-                  <p>
-                    Until you configure these credentials, the application will use
-                    placeholder data for demonstration purposes.
-                  </p>
-                </CardContent>
-              </Card>
+            <div className="text-center py-10">
+              <p className="text-red-500">{error}</p>
             </div>
           )}
 

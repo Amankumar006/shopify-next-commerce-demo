@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getProductByHandle } from "@/lib/shopify";
@@ -26,6 +25,13 @@ const ProductDetail = () => {
       try {
         setIsLoading(true);
         const productData = await getProductByHandle(handle);
+        
+        if (!productData) {
+          setError("Product not found");
+          setProduct(null);
+          return;
+        }
+        
         setProduct(productData);
         
         // Set default variant if available

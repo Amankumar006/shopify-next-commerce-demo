@@ -1,4 +1,3 @@
-
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { createCart, getCart, addToCart, removeFromCart, updateCartQuantity } from "@/lib/shopify";
 import { useToast } from "@/hooks/use-toast";
@@ -187,7 +186,14 @@ export function ShopProvider({ children }: ShopProviderProps) {
 
   const proceedToCheckout = () => {
     if (cart?.checkoutUrl) {
-      window.open(cart.checkoutUrl, "_blank");
+      // Since we're using mock data, we'll just show a success message instead of redirecting
+      toast({
+        title: "Checkout",
+        description: "This is a demo store. In a real implementation, you would be redirected to a checkout page.",
+      });
+      // Simulating checkout by closing the cart and emptying it
+      setIsCartOpen(false);
+      // In a real implementation, we might clear the cart here or mark it as checked out
     }
   };
 
