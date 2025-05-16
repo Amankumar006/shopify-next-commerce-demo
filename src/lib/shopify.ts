@@ -1,14 +1,91 @@
 
-import { mockProducts, generateCartId, generateLineId, MockCart, MockProduct } from './mockData';
-
-// Mock implementation using local data instead of Shopify API
+import { mockProducts, mockCollections, generateCartId, generateLineId, MockCart, MockProduct, MockCollection, WishlistItem } from './mockData';
 
 // Get all products
-export async function getProducts(): Promise<MockProduct[]> {
-  // Return mock products with slight delay to simulate network request
+export async function getProducts(
+  collectionHandle?: string,
+  searchQuery?: string,
+  sortKey?: string, 
+  reverse?: boolean
+): Promise<MockProduct[]> {
+  // Apply filtering based on parameters
+  let filteredProducts = [...mockProducts];
+  
+  // Filter by collection if specified
+  if (collectionHandle) {
+    filteredProducts = filteredProducts.filter(product => 
+      product.collections.includes(collectionHandle)
+    );
+  }
+  
+  // Filter by search query if specified
+  if (searchQuery) {
+    const query = searchQuery.toLowerCase();
+    filteredProducts = filteredProducts.filter(product => 
+      product.title.toLowerCase().includes(query) || 
+      product.description.toLowerCase().includes(query) ||
+      product.tags.some(tag => tag.toLowerCase().includes(query))
+    );
+  }
+
+  // Apply sorting
+  if (sortKey) {
+    filteredProducts.sort((a, b) => {
+      let valueA, valueB;
+      
+      // Sort based on specified key
+      switch(sortKey) {
+        case 'TITLE':
+          valueA = a.title;
+          valueB = b.title;
+          break;
+        case 'PRICE':
+          valueA = parseFloat(a.priceRange.minVariantPrice.amount);
+          valueB = parseFloat(b.priceRange.minVariantPrice.amount);
+          break;
+        case 'BEST_SELLING':
+          // Mock implementation - could be based on number of reviews
+          valueA = a.reviews?.length || 0;
+          valueB = b.reviews?.length || 0;
+          break;
+        default:
+          valueA = a.title;
+          valueB = b.title;
+      }
+      
+      const compareResult = typeof valueA === 'string' 
+        ? valueA.localeCompare(valueB) 
+        : valueA - valueB;
+        
+      return reverse ? -compareResult : compareResult;
+    });
+  }
+  
+  // Return filtered products with slight delay
   return new Promise(resolve => {
     setTimeout(() => {
-      resolve(mockProducts);
+      resolve(filteredProducts);
+    }, 300);
+  });
+}
+
+// Get all collections
+export async function getCollections(): Promise<MockCollection[]> {
+  // Return mock collections with slight delay
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve(mockCollections);
+    }, 300);
+  });
+}
+
+// Get a specific collection by handle
+export async function getCollectionByHandle(handle: string): Promise<MockCollection | null> {
+  // Return mock collection by handle with slight delay
+  return new Promise(resolve => {
+    setTimeout(() => {
+      const collection = mockCollections.find(c => c.handle === handle);
+      resolve(collection || null);
     }, 300);
   });
 }
@@ -20,6 +97,53 @@ export async function getProductByHandle(handle: string): Promise<MockProduct | 
     setTimeout(() => {
       const product = mockProducts.find(p => p.handle === handle);
       resolve(product || null);
+    }, 300);
+  });
+}
+
+// Get products by collection handle
+export async function getProductsByCollection(collectionHandle: string): Promise<MockProduct[]> {
+  // Return mock products filtered by collection with slight delay
+  return new Promise(resolve => {
+    setTimeout(() => {
+      const filteredProducts = mockProducts.filter(p => p.collections.includes(collectionHandle));
+      resolve(filteredProducts);
+    }, 300);
+  });
+}
+
+// Get related products
+export async function getRelatedProducts(productId: string, limit = 4): Promise<MockProduct[]> {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      // Find the current product
+      const currentProduct = mockProducts.find(p => p.id === productId);
+      
+      if (!currentProduct) {
+        resolve([]);
+        return;
+      }
+      
+      // Filter products in the same collections, excluding the current product
+      let relatedProducts = mockProducts
+        .filter(p => 
+          p.id !== productId && 
+          p.collections.some(c => currentProduct.collections.includes(c))
+        );
+      
+      // If not enough related products by collection, add products with similar tags
+      if (relatedProducts.length < limit) {
+        const productsWithSimilarTags = mockProducts.filter(p => 
+          p.id !== productId && 
+          !relatedProducts.includes(p) &&
+          p.tags.some(tag => currentProduct.tags.includes(tag))
+        );
+        
+        relatedProducts = [...relatedProducts, ...productsWithSimilarTags];
+      }
+      
+      // Limit the number of related products
+      resolve(relatedProducts.slice(0, limit));
     }, 300);
   });
 }
@@ -54,11 +178,11 @@ export async function createCart(): Promise<MockCart> {
     estimatedCost: {
       subtotalAmount: {
         amount: "0.00",
-        currencyCode: "USD"
+        currencyCode: "INR"
       },
       totalAmount: {
         amount: "0.00",
-        currencyCode: "USD"
+        currencyCode: "INR"
       }
     }
   };
@@ -227,4 +351,70 @@ function updateCartTotals(cart: MockCart) {
   // Update cart totals
   cart.estimatedCost.subtotalAmount.amount = subtotal.toFixed(2);
   cart.estimatedCost.totalAmount.amount = subtotal.toFixed(2);
+}
+
+// Wishlist functions
+
+const WISHLIST_STORAGE_KEY = 'mock_wishlist_data';
+
+// Get wishlist
+export function getWishlist(): WishlistItem[] {
+  const stored = localStorage.getItem(WISHLIST_STORAGE_KEY);
+  return stored ? JSON.parse(stored) : [];
+}
+
+// Get wishlist products
+export async function getWishlistProducts(): Promise<MockProduct[]> {
+  const wishlist = getWishlist();
+  const productIds = wishlist.map(item => item.productId);
+  
+  return new Promise(resolve => {
+    setTimeout(() => {
+      const wishlistProducts = mockProducts.filter(product => 
+        productIds.includes(product.id)
+      );
+      resolve(wishlistProducts);
+    }, 300);
+  });
+}
+
+// Add to wishlist
+export function addToWishlist(productId: string): boolean {
+  const wishlist = getWishlist();
+  
+  // Check if product already in wishlist
+  if (wishlist.some(item => item.productId === productId)) {
+    return false;
+  }
+  
+  // Add to wishlist
+  wishlist.push({
+    productId,
+    addedAt: new Date().toISOString()
+  });
+  
+  // Save updated wishlist
+  localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(wishlist));
+  
+  return true;
+}
+
+// Remove from wishlist
+export function removeFromWishlist(productId: string): boolean {
+  const wishlist = getWishlist();
+  
+  // Find product in wishlist
+  const initialLength = wishlist.length;
+  const updatedWishlist = wishlist.filter(item => item.productId !== productId);
+  
+  // Save updated wishlist
+  localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(updatedWishlist));
+  
+  return updatedWishlist.length < initialLength;
+}
+
+// Check if product is in wishlist
+export function isInWishlist(productId: string): boolean {
+  const wishlist = getWishlist();
+  return wishlist.some(item => item.productId === productId);
 }

@@ -1,8 +1,18 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { createCart, getCart, addToCart, removeFromCart, updateCartQuantity } from "@/lib/shopify";
+import { 
+  createCart, 
+  getCart, 
+  addToCart, 
+  removeFromCart, 
+  updateCartQuantity, 
+  getWishlistProducts,
+  addToWishlist,
+  removeFromWishlist,
+  isInWishlist
+} from "@/lib/shopify";
 import { useToast } from "@/hooks/use-toast";
-import { MockCart } from "@/lib/mockData";
+import { MockCart, MockProduct } from "@/lib/mockData";
 
 interface CartItem {
   id: string;
@@ -51,6 +61,12 @@ interface ShopContextType {
   removeProductFromCart: (lineId: string) => Promise<void>;
   updateProductQuantity: (lineId: string, quantity: number) => Promise<void>;
   proceedToCheckout: () => void;
+  // Wishlist functionality
+  wishlist: MockProduct[];
+  isWishlistLoading: boolean;
+  addToWishlist: (productId: string) => void;
+  removeFromWishlist: (productId: string) => void;
+  isInWishlist: (productId: string) => boolean;
 }
 
 const ShopContext = createContext<ShopContextType | undefined>(undefined);
@@ -71,6 +87,8 @@ export function ShopProvider({ children }: ShopProviderProps) {
   const [cart, setCart] = useState<Cart | null>(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [wishlist, setWishlist] = useState<MockProduct[]>([]);
+  const [isWishlistLoading, setIsWishlistLoading] = useState(false);
   const { toast } = useToast();
 
   // Calculate cart count
@@ -117,6 +135,23 @@ export function ShopProvider({ children }: ShopProviderProps) {
 
     initializeCart();
   }, [toast]);
+
+  // Initialize wishlist
+  useEffect(() => {
+    const loadWishlist = async () => {
+      setIsWishlistLoading(true);
+      try {
+        const products = await getWishlistProducts();
+        setWishlist(products);
+      } catch (error) {
+        console.error("Error loading wishlist:", error);
+      } finally {
+        setIsWishlistLoading(false);
+      }
+    };
+
+    loadWishlist();
+  }, []);
 
   const toggleCart = () => {
     setIsCartOpen(!isCartOpen);
@@ -201,6 +236,40 @@ export function ShopProvider({ children }: ShopProviderProps) {
     }
   };
 
+  // Wishlist functions
+  const handleAddToWishlist = (productId: string) => {
+    if (addToWishlist(productId)) {
+      // Update wishlist state
+      const product = wishlist.find(p => p.id === productId);
+      if (!product) {
+        getWishlistProducts().then(products => {
+          setWishlist(products);
+        });
+      }
+      
+      toast({
+        title: "Added to Wishlist",
+        description: "Item has been added to your wishlist",
+      });
+    }
+  };
+
+  const handleRemoveFromWishlist = (productId: string) => {
+    if (removeFromWishlist(productId)) {
+      // Update wishlist state
+      setWishlist(current => current.filter(p => p.id !== productId));
+      
+      toast({
+        title: "Removed from Wishlist",
+        description: "Item has been removed from your wishlist",
+      });
+    }
+  };
+
+  const checkIsInWishlist = (productId: string) => {
+    return isInWishlist(productId);
+  };
+
   const value = {
     cart,
     isCartOpen,
@@ -211,6 +280,12 @@ export function ShopProvider({ children }: ShopProviderProps) {
     removeProductFromCart,
     updateProductQuantity,
     proceedToCheckout,
+    // Wishlist
+    wishlist,
+    isWishlistLoading,
+    addToWishlist: handleAddToWishlist,
+    removeFromWishlist: handleRemoveFromWishlist,
+    isInWishlist: checkIsInWishlist,
   };
 
   return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>;
