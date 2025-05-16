@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getProductByHandle } from "@/lib/shopify";
@@ -6,10 +7,11 @@ import { useShopContext } from "@/context/ShopContext";
 import Navbar from "@/components/Navbar";
 import CartDrawer from "@/components/CartDrawer";
 import Footer from "@/components/Footer";
+import { MockProduct } from "@/lib/mockData";
 
 const ProductDetail = () => {
   const { handle } = useParams<{ handle: string }>();
-  const [product, setProduct] = useState<any>(null);
+  const [product, setProduct] = useState<MockProduct | null>(null);
   const [selectedVariant, setSelectedVariant] = useState<string>("");
   const [quantity, setQuantity] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(true);

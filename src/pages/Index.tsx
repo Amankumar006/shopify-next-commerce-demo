@@ -6,9 +6,10 @@ import Navbar from "@/components/Navbar";
 import CartDrawer from "@/components/CartDrawer";
 import HeroSection from "@/components/HeroSection";
 import Footer from "@/components/Footer";
+import { MockProduct } from "@/lib/mockData";
 
 const Index = () => {
-  const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [featuredProducts, setFeaturedProducts] = useState<MockProduct[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

@@ -1,6 +1,8 @@
+
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { createCart, getCart, addToCart, removeFromCart, updateCartQuantity } from "@/lib/shopify";
 import { useToast } from "@/hooks/use-toast";
+import { MockCart } from "@/lib/mockData";
 
 interface CartItem {
   id: string;
@@ -88,7 +90,7 @@ export function ShopProvider({ children }: ShopProviderProps) {
           // Try to fetch existing cart
           const existingCart = await getCart(existingCartId);
           if (existingCart) {
-            setCart(existingCart);
+            setCart(existingCart as Cart);
             return;
           }
         } catch (error) {
@@ -99,8 +101,10 @@ export function ShopProvider({ children }: ShopProviderProps) {
       // Create new cart if no existing cart was found or retrieval failed
       try {
         const newCart = await createCart();
-        localStorage.setItem("cartId", newCart.id);
-        setCart(newCart);
+        if (newCart && 'id' in newCart) {
+          localStorage.setItem("cartId", newCart.id);
+          setCart(newCart as Cart);
+        }
       } catch (error) {
         console.error("Error creating cart:", error);
         toast({
@@ -124,7 +128,7 @@ export function ShopProvider({ children }: ShopProviderProps) {
     setIsLoading(true);
     try {
       const updatedCart = await addToCart(cart.id, [{ merchandiseId, quantity }]);
-      setCart(updatedCart);
+      setCart(updatedCart as Cart);
       toast({
         title: "Success",
         description: "Item added to cart",
@@ -148,7 +152,7 @@ export function ShopProvider({ children }: ShopProviderProps) {
     setIsLoading(true);
     try {
       const updatedCart = await removeFromCart(cart.id, [lineId]);
-      setCart(updatedCart);
+      setCart(updatedCart as Cart);
       toast({
         title: "Item removed",
         description: "Item removed from cart",
@@ -171,7 +175,7 @@ export function ShopProvider({ children }: ShopProviderProps) {
     setIsLoading(true);
     try {
       const updatedCart = await updateCartQuantity(cart.id, lineId, quantity);
-      setCart(updatedCart);
+      setCart(updatedCart as Cart);
     } catch (error) {
       console.error("Error updating cart quantity:", error);
       toast({

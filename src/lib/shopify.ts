@@ -1,10 +1,10 @@
 
-import { mockProducts, generateCartId, generateLineId, MockCart } from './mockData';
+import { mockProducts, generateCartId, generateLineId, MockCart, MockProduct } from './mockData';
 
 // Mock implementation using local data instead of Shopify API
 
 // Get all products
-export async function getProducts() {
+export async function getProducts(): Promise<MockProduct[]> {
   // Return mock products with slight delay to simulate network request
   return new Promise(resolve => {
     setTimeout(() => {
@@ -14,7 +14,7 @@ export async function getProducts() {
 }
 
 // Get a specific product by handle
-export async function getProductByHandle(handle: string) {
+export async function getProductByHandle(handle: string): Promise<MockProduct | null> {
   // Return mock product by handle with slight delay
   return new Promise(resolve => {
     setTimeout(() => {
@@ -39,7 +39,7 @@ const saveCartToStorage = (cart: MockCart): void => {
 };
 
 // Create a cart
-export async function createCart() {
+export async function createCart(): Promise<MockCart> {
   // Check if we already have a cart in storage
   const existingCart = getStoredCart();
   if (existingCart) {
@@ -74,7 +74,7 @@ export async function createCart() {
 }
 
 // Add items to cart
-export async function addToCart(cartId: string, lines: { merchandiseId: string; quantity: number }[]) {
+export async function addToCart(cartId: string, lines: { merchandiseId: string; quantity: number }[]): Promise<MockCart> {
   const cart = getStoredCart();
   if (!cart) {
     throw new Error("Cart not found");
@@ -150,7 +150,7 @@ export async function addToCart(cartId: string, lines: { merchandiseId: string; 
 }
 
 // Remove items from cart
-export async function removeFromCart(cartId: string, lineIds: string[]) {
+export async function removeFromCart(cartId: string, lineIds: string[]): Promise<MockCart> {
   const cart = getStoredCart();
   if (!cart) {
     throw new Error("Cart not found");
@@ -175,7 +175,7 @@ export async function removeFromCart(cartId: string, lineIds: string[]) {
 }
 
 // Get cart
-export async function getCart(cartId: string) {
+export async function getCart(cartId: string): Promise<MockCart | null> {
   const cart = getStoredCart();
   
   return new Promise(resolve => {
@@ -186,7 +186,7 @@ export async function getCart(cartId: string) {
 }
 
 // Update cart quantity
-export async function updateCartQuantity(cartId: string, lineId: string, quantity: number) {
+export async function updateCartQuantity(cartId: string, lineId: string, quantity: number): Promise<MockCart> {
   const cart = getStoredCart();
   if (!cart) {
     throw new Error("Cart not found");

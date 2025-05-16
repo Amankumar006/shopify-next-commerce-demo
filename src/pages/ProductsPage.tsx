@@ -6,9 +6,10 @@ import Navbar from "@/components/Navbar";
 import CartDrawer from "@/components/CartDrawer";
 import Footer from "@/components/Footer";
 import { Link } from "react-router-dom";
+import { MockProduct } from "@/lib/mockData";
 
 const ProductsPage = () => {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<MockProduct[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
