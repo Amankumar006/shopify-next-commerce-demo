@@ -4,11 +4,10 @@ import { getProducts } from "@/lib/shopify";
 import ProductCard from "@/components/ProductCard";
 import Navbar from "@/components/Navbar";
 import CartDrawer from "@/components/CartDrawer";
-import HeroSection from "@/components/HeroSection";
 import Footer from "@/components/Footer";
 
-const Index = () => {
-  const [featuredProducts, setFeaturedProducts] = useState([]);
+const ProductsPage = () => {
+  const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -16,8 +15,8 @@ const Index = () => {
     async function loadProducts() {
       try {
         setIsLoading(true);
-        const products = await getProducts();
-        setFeaturedProducts(products.slice(0, 8));
+        const fetchedProducts = await getProducts();
+        setProducts(fetchedProducts);
         setError(null);
       } catch (err) {
         console.error("Error loading products:", err);
@@ -36,11 +35,13 @@ const Index = () => {
       <CartDrawer />
 
       <main>
-        <HeroSection />
+        <div className="bg-gray-50 py-8">
+          <div className="container-custom">
+            <h1 className="text-3xl md:text-4xl font-bold">All Products</h1>
+          </div>
+        </div>
 
-        <section className="container-custom py-16">
-          <h2 className="text-3xl font-bold mb-8 text-center">Featured Products</h2>
-
+        <section className="container-custom py-12">
           {isLoading && (
             <div className="flex justify-center items-center h-64">
               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
@@ -50,21 +51,14 @@ const Index = () => {
           {error && (
             <div className="text-center py-10">
               <p className="text-red-500">{error}</p>
-              <p className="mt-2 text-gray-600">
-                This demo requires Shopify API credentials to be configured. Please set up your environment variables:
-                <ul className="list-disc pl-5 mt-2 text-left max-w-md mx-auto">
-                  <li>NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN</li>
-                  <li>NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN</li>
-                </ul>
-              </p>
             </div>
           )}
 
           {!isLoading && !error && (
             <>
-              {featuredProducts.length > 0 ? (
+              {products.length > 0 ? (
                 <div className="product-grid">
-                  {featuredProducts.map((product: any) => (
+                  {products.map((product: any) => (
                     <ProductCard key={product.id} product={product} />
                   ))}
                 </div>
@@ -83,4 +77,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default ProductsPage;
