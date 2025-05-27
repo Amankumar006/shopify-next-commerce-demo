@@ -1,7 +1,3 @@
-Here’s a starter README for your shopify-next-commerce-demo project. You can further customize it with a project description, features, and setup instructions.
-
----
-
 # Shopify Next.js Commerce Demo
 
 This is a demo project showcasing a Shopify-powered e-commerce storefront built with Next.js and TypeScript.
@@ -54,8 +50,5 @@ This is a demo project showcasing a Shopify-powered e-commerce storefront built 
 
 ## License
 
-This project is private. For usage permissions, contact the repository owner.
-
----
 
 Feel free to ask if you want to add sections for contributing, deployment, or anything else!
