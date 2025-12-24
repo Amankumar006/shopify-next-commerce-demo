@@ -1,52 +1,148 @@
 
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 
 export default function HeroSection() {
   return (
-    <div className="relative bg-gray-50">
-      <div className="container-custom py-16 md:py-24">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-          <div className="space-y-6">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
-              Modern E-commerce <span className="text-primary">Reimagined</span>
-            </h1>
-            <p className="text-lg text-gray-600 md:text-xl">
-              Experience the future of online shopping with our headless Shopify + Next.js demo. Fast, flexible, and beautifully designed.
-            </p>
-            <div className="flex flex-wrap gap-4">
+    <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-background">
+      {/* Subtle background pattern */}
+      <div className="absolute inset-0 opacity-[0.02]">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0)`,
+          backgroundSize: '40px 40px'
+        }} />
+      </div>
+
+      <div className="container-custom relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          {/* Left Content */}
+          <div className="space-y-8">
+            <div className="space-y-6">
+              <p 
+                className="text-sm font-sans uppercase tracking-[0.3em] text-muted-foreground opacity-0 animate-fade-up"
+              >
+                Curated Collection
+              </p>
+              
+              <h1 
+                className="font-serif text-5xl md:text-6xl lg:text-7xl leading-[1.1] opacity-0 animate-fade-up delay-100"
+              >
+                Elevate Your
+                <br />
+                <span className="italic">Everyday</span> Style
+              </h1>
+              
+              <div className="w-24 h-px bg-foreground/20 opacity-0 animate-line-expand delay-300" />
+              
+              <p 
+                className="text-lg text-muted-foreground font-light max-w-md leading-relaxed opacity-0 animate-fade-up delay-200"
+              >
+                Discover timeless pieces crafted with precision. Where minimalism meets sophistication in every detail.
+              </p>
+            </div>
+
+            <div 
+              className="flex flex-wrap gap-4 opacity-0 animate-fade-up delay-400"
+            >
               <Link to="/products">
-                <Button size="lg">
-                  Browse Products
+                <Button 
+                  size="lg" 
+                  className="group px-8 py-6 text-sm uppercase tracking-widest font-sans rounded-none transition-all duration-500"
+                >
+                  Explore Collection
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </Button>
               </Link>
-              <Link to="/about">
-                <Button variant="outline" size="lg">
-                  Learn More
+              <Link to="/collections">
+                <Button 
+                  variant="outline" 
+                  size="lg"
+                  className="px-8 py-6 text-sm uppercase tracking-widest font-sans rounded-none border-foreground/20 hover:bg-foreground hover:text-background transition-all duration-500"
+                >
+                  View Categories
                 </Button>
               </Link>
             </div>
-          </div>
-          <div className="relative">
-            <div className="aspect-[5/4] bg-gradient-to-tr from-primary/20 to-primary/5 rounded-xl overflow-hidden">
-              <img
-                src="/placeholder.svg"
-                alt="Hero product"
-                className="w-full h-full object-cover mix-blend-overlay"
-              />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="p-6 bg-white/95 backdrop-blur rounded-lg shadow-lg text-center max-w-[80%]">
-                  <p className="font-medium text-primary mb-2">Featured Collection</p>
-                  <h3 className="text-xl font-bold mb-3">Summer Essentials</h3>
-                  <Link to="/products" className="text-sm font-medium text-primary hover:underline">
-                    View Collection →
-                  </Link>
-                </div>
+
+            {/* Stats */}
+            <div 
+              className="flex gap-12 pt-8 border-t border-border opacity-0 animate-fade-up delay-500"
+            >
+              <div>
+                <p className="font-serif text-3xl">500+</p>
+                <p className="text-sm text-muted-foreground mt-1">Premium Products</p>
               </div>
+              <div>
+                <p className="font-serif text-3xl">50K+</p>
+                <p className="text-sm text-muted-foreground mt-1">Happy Customers</p>
+              </div>
+              <div>
+                <p className="font-serif text-3xl">4.9</p>
+                <p className="text-sm text-muted-foreground mt-1">Average Rating</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Right - Image Grid */}
+          <div className="relative hidden lg:block">
+            <div className="grid grid-cols-2 gap-4">
+              {/* Main large image */}
+              <div 
+                className="col-span-2 aspect-[4/3] overflow-hidden opacity-0 animate-scale-in delay-200"
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?q=80&w=2070&auto=format&fit=crop"
+                  alt="Curated fashion collection"
+                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                />
+              </div>
+              
+              {/* Bottom left */}
+              <div 
+                className="aspect-square overflow-hidden opacity-0 animate-scale-in delay-300"
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070&auto=format&fit=crop"
+                  alt="Fashion accessories"
+                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                />
+              </div>
+              
+              {/* Bottom right */}
+              <div 
+                className="aspect-square overflow-hidden opacity-0 animate-scale-in delay-400"
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=2071&auto=format&fit=crop"
+                  alt="Premium clothing"
+                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                />
+              </div>
+            </div>
+
+            {/* Floating badge */}
+            <div 
+              className="absolute -left-8 top-1/2 -translate-y-1/2 bg-background border border-border p-6 shadow-lg opacity-0 animate-fade-up delay-600"
+            >
+              <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">Featured</p>
+              <p className="font-serif text-xl">New Arrivals</p>
+              <Link 
+                to="/products" 
+                className="text-sm text-muted-foreground mt-2 inline-flex items-center gap-1 link-underline"
+              >
+                Shop Now <ArrowRight className="h-3 w-3" />
+              </Link>
             </div>
           </div>
         </div>
       </div>
-    </div>
+
+      {/* Scroll indicator */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-0 animate-fade-in delay-600">
+        <span className="text-xs uppercase tracking-widest text-muted-foreground">Scroll</span>
+        <div className="w-px h-12 bg-gradient-to-b from-foreground/40 to-transparent" />
+      </div>
+    </section>
   );
 }
