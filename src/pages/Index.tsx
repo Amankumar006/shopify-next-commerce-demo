@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getProducts, getCollections } from "@/lib/shopify";
 import ProductCard from "@/components/ProductCard";
 import Navbar from "@/components/Navbar";
@@ -9,8 +9,7 @@ import Footer from "@/components/Footer";
 import { MockProduct, MockCollection } from "@/lib/mockData";
 import { Link } from "react-router-dom";
 import { ArrowRight, Truck, Shield, RotateCcw } from "lucide-react";
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { 
   AnimatedSection, 
   AnimatedItem, 
@@ -85,41 +84,7 @@ const Index = () => {
                 <p className="text-destructive">{error}</p>
               </div>
             ) : (
-              <StaggerContainer 
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-                staggerDelay={0.15}
-              >
-                {collections.map((collection) => (
-                  <StaggerItem key={collection.id}>
-                    <Link 
-                      to={`/collection/${collection.handle}`}
-                      className="group block"
-                    >
-                      <div className="relative aspect-[3/4] overflow-hidden bg-secondary">
-                        <motion.img 
-                          src={collection.image?.url || '/placeholder.svg'}
-                          alt={collection.image?.altText || collection.title}
-                          className="w-full h-full object-cover"
-                          whileHover={{ scale: 1.05 }}
-                          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-foreground/0 to-transparent" />
-                        <div className="absolute bottom-0 left-0 right-0 p-6">
-                          <h3 className="font-serif text-2xl text-background">{collection.title}</h3>
-                          <motion.p 
-                            className="text-background/80 text-sm mt-2 flex items-center gap-2"
-                            initial={{ opacity: 0, y: 10 }}
-                            whileHover={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.3 }}
-                          >
-                            Explore <ArrowRight className="h-3 w-3" />
-                          </motion.p>
-                        </div>
-                      </div>
-                    </Link>
-                  </StaggerItem>
-                ))}
-              </StaggerContainer>
+              <CollectionsGrid collections={collections} />
             )}
           </div>
         </section>
@@ -271,6 +236,67 @@ const Index = () => {
     </>
   );
 };
+
+// Collection card with parallax effect
+function ParallaxCollectionCard({ collection, index }: { collection: MockCollection; index: number }) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: cardRef,
+    offset: ["start end", "end start"]
+  });
+
+  // Each card gets a slightly different parallax intensity for visual variety
+  const parallaxIntensity = 20 + (index % 2) * 15;
+  const imageY = useTransform(scrollYProgress, [0, 1], [`-${parallaxIntensity}%`, `${parallaxIntensity}%`]);
+
+  return (
+    <div ref={cardRef}>
+      <Link 
+        to={`/collection/${collection.handle}`}
+        className="group block"
+      >
+        <div className="relative aspect-[3/4] overflow-hidden bg-secondary">
+          <motion.img 
+            src={collection.image?.url || '/placeholder.svg'}
+            alt={collection.image?.altText || collection.title}
+            className="w-full h-full object-cover scale-125"
+            style={{ y: imageY }}
+            whileHover={{ scale: 1.35 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-foreground/0 to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 p-6">
+            <h3 className="font-serif text-2xl text-background">{collection.title}</h3>
+            <motion.p 
+              className="text-background/80 text-sm mt-2 flex items-center gap-2"
+              initial={{ opacity: 0, y: 10 }}
+              whileHover={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              Explore <ArrowRight className="h-3 w-3" />
+            </motion.p>
+          </div>
+        </div>
+      </Link>
+    </div>
+  );
+}
+
+// Collections grid with parallax
+function CollectionsGrid({ collections }: { collections: MockCollection[] }) {
+  return (
+    <StaggerContainer 
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+      staggerDelay={0.15}
+    >
+      {collections.map((collection, index) => (
+        <StaggerItem key={collection.id}>
+          <ParallaxCollectionCard collection={collection} index={index} />
+        </StaggerItem>
+      ))}
+    </StaggerContainer>
+  );
+}
 
 // Separate component for newsletter section with its own animation
 function NewsletterSection() {
