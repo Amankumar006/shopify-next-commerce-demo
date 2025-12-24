@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useShopContext } from "@/context/ShopContext";
-import { Heart } from "lucide-react";
+import { Heart, ShoppingBag } from "lucide-react";
 
 interface ProductCardProps {
   product: {
@@ -63,37 +63,60 @@ export default function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <div className="product-card group relative">
+    <div className="group relative bg-background">
       <Link to={`/product/${product.handle}`} className="block">
-        <div className="h-64 overflow-hidden relative">
+        {/* Image Container */}
+        <div className="aspect-[3/4] overflow-hidden relative bg-secondary">
           <img 
             src={imageUrl}
             alt={imageAlt}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-105"
           />
+          
+          {/* Wishlist Button */}
           <button 
-            className={`absolute top-2 right-2 p-2 rounded-full ${productInWishlist ? 'bg-red-100' : 'bg-white/80'} hover:bg-red-100 transition-colors`} 
+            className={`absolute top-4 right-4 p-2.5 border transition-all duration-300 ${
+              productInWishlist 
+                ? 'bg-foreground border-foreground' 
+                : 'bg-background/90 border-transparent hover:bg-foreground hover:border-foreground'
+            }`} 
             onClick={handleToggleWishlist}
             aria-label={productInWishlist ? "Remove from wishlist" : "Add to wishlist"}
           >
             <Heart 
-              className={`h-5 w-5 ${productInWishlist ? 'text-red-500 fill-red-500' : 'text-gray-600'}`} 
+              className={`h-4 w-4 transition-colors ${
+                productInWishlist 
+                  ? 'text-background fill-background' 
+                  : 'text-foreground group-hover:text-background'
+              }`} 
+              strokeWidth={1.5}
             />
           </button>
-        </div>
-        <div className="p-5">
-          <h3 className="text-lg font-medium mb-2 line-clamp-1">{product.title}</h3>
-          <p className="text-gray-600 mb-3 line-clamp-2">{product.description}</p>
-          <div className="flex items-center justify-between">
-            <span className="text-lg font-semibold">{formattedPrice}</span>
+
+          {/* Quick Add Button - appears on hover */}
+          <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out">
             <Button 
               onClick={handleAddToCart}
               disabled={isLoading}
-              size="sm"
+              className="w-full rounded-none py-4 text-xs uppercase tracking-widest font-sans bg-foreground hover:bg-foreground/90 transition-colors"
             >
+              <ShoppingBag className="h-4 w-4 mr-2" strokeWidth={1.5} />
               Add to Cart
             </Button>
           </div>
+        </div>
+
+        {/* Product Info */}
+        <div className="pt-5 pb-2">
+          <h3 className="font-serif text-lg mb-1 group-hover:opacity-70 transition-opacity duration-300">
+            {product.title}
+          </h3>
+          <p className="text-muted-foreground text-sm line-clamp-1 mb-2">
+            {product.description}
+          </p>
+          <p className="text-foreground font-medium tracking-wide">
+            {formattedPrice}
+          </p>
         </div>
       </Link>
     </div>
