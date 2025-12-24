@@ -1,8 +1,10 @@
 
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useShopContext } from "@/context/ShopContext";
-import { Heart, ShoppingBag } from "lucide-react";
+import { Heart, ShoppingBag, Eye } from "lucide-react";
+import { QuickViewModal } from "./QuickViewModal";
 
 interface ProductCardProps {
   product: {
@@ -24,11 +26,17 @@ interface ProductCardProps {
         };
       }>;
     };
+    options?: Array<{
+      id: string;
+      name: string;
+      values: string[];
+    }>;
   };
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
   const { addProductToCart, isLoading, addToWishlist, removeFromWishlist, isInWishlist } = useShopContext();
+  const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
   
   // Format price
   const price = parseFloat(product.priceRange.minVariantPrice.amount);
@@ -62,63 +70,93 @@ export default function ProductCard({ product }: ProductCardProps) {
     }
   };
 
+  const handleQuickView = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsQuickViewOpen(true);
+  };
+
   return (
-    <div className="group relative bg-background">
-      <Link to={`/product/${product.handle}`} className="block">
-        {/* Image Container */}
-        <div className="aspect-[3/4] overflow-hidden relative bg-secondary">
-          <img 
-            src={imageUrl}
-            alt={imageAlt}
-            className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-105"
-          />
-          
-          {/* Wishlist Button */}
-          <button 
-            className={`absolute top-4 right-4 p-2.5 border transition-all duration-300 ${
-              productInWishlist 
-                ? 'bg-foreground border-foreground' 
-                : 'bg-background/90 border-transparent hover:bg-foreground hover:border-foreground'
-            }`} 
-            onClick={handleToggleWishlist}
-            aria-label={productInWishlist ? "Remove from wishlist" : "Add to wishlist"}
-          >
-            <Heart 
-              className={`h-4 w-4 transition-colors ${
-                productInWishlist 
-                  ? 'text-background fill-background' 
-                  : 'text-foreground group-hover:text-background'
-              }`} 
-              strokeWidth={1.5}
+    <>
+      <div className="group relative bg-background">
+        <Link to={`/product/${product.handle}`} className="block">
+          {/* Image Container */}
+          <div className="aspect-[3/4] overflow-hidden relative bg-secondary">
+            <img 
+              src={imageUrl}
+              alt={imageAlt}
+              className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-105"
             />
-          </button>
+            
+            {/* Overlay Actions - Top Right */}
+            <div className="absolute top-4 right-4 flex flex-col gap-2">
+              {/* Wishlist Button */}
+              <button 
+                className={`p-2.5 border transition-all duration-300 opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 ${
+                  productInWishlist 
+                    ? 'bg-foreground border-foreground opacity-100 translate-x-0' 
+                    : 'bg-background/90 border-transparent hover:bg-foreground hover:border-foreground'
+                }`} 
+                onClick={handleToggleWishlist}
+                aria-label={productInWishlist ? "Remove from wishlist" : "Add to wishlist"}
+              >
+                <Heart 
+                  className={`h-4 w-4 transition-colors ${
+                    productInWishlist 
+                      ? 'text-background fill-background' 
+                      : 'text-foreground hover:text-background'
+                  }`} 
+                  strokeWidth={1.5}
+                />
+              </button>
 
-          {/* Quick Add Button - appears on hover */}
-          <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out">
-            <Button 
-              onClick={handleAddToCart}
-              disabled={isLoading}
-              className="w-full rounded-none py-4 text-xs uppercase tracking-widest font-sans bg-foreground hover:bg-foreground/90 transition-colors"
-            >
-              <ShoppingBag className="h-4 w-4 mr-2" strokeWidth={1.5} />
-              Add to Cart
-            </Button>
+              {/* Quick View Button */}
+              <button 
+                className="p-2.5 bg-background/90 border border-transparent hover:bg-foreground hover:border-foreground transition-all duration-300 opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 delay-75"
+                onClick={handleQuickView}
+                aria-label="Quick view"
+              >
+                <Eye 
+                  className="h-4 w-4 text-foreground hover:text-background transition-colors" 
+                  strokeWidth={1.5}
+                />
+              </button>
+            </div>
+
+            {/* Quick Add Button - Bottom */}
+            <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out">
+              <Button 
+                onClick={handleAddToCart}
+                disabled={isLoading}
+                className="w-full rounded-none py-4 text-xs uppercase tracking-widest font-sans bg-foreground hover:bg-foreground/90 transition-colors"
+              >
+                <ShoppingBag className="h-4 w-4 mr-2" strokeWidth={1.5} />
+                Add to Cart
+              </Button>
+            </div>
           </div>
-        </div>
 
-        {/* Product Info */}
-        <div className="pt-5 pb-2">
-          <h3 className="font-serif text-lg mb-1 group-hover:opacity-70 transition-opacity duration-300">
-            {product.title}
-          </h3>
-          <p className="text-muted-foreground text-sm line-clamp-1 mb-2">
-            {product.description}
-          </p>
-          <p className="text-foreground font-medium tracking-wide">
-            {formattedPrice}
-          </p>
-        </div>
-      </Link>
-    </div>
+          {/* Product Info */}
+          <div className="pt-5 pb-2">
+            <h3 className="font-serif text-lg mb-1 group-hover:opacity-70 transition-opacity duration-300">
+              {product.title}
+            </h3>
+            <p className="text-muted-foreground text-sm line-clamp-1 mb-2">
+              {product.description}
+            </p>
+            <p className="text-foreground font-medium tracking-wide">
+              {formattedPrice}
+            </p>
+          </div>
+        </Link>
+      </div>
+
+      {/* Quick View Modal */}
+      <QuickViewModal 
+        product={product}
+        isOpen={isQuickViewOpen}
+        onClose={() => setIsQuickViewOpen(false)}
+      />
+    </>
   );
 }
